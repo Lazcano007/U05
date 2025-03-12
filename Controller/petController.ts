@@ -36,17 +36,22 @@ export const getPetById = (req: Request, res: Response) => {
 
 // Detta lägger till DATA i DB (i detta fall djuren)
 export const addPet = (req: Request, res: Response) => {
+    // Kontrollera att alla obligatoriska fält finns
+    if (!req.body.name || !req.body.species || !req.body.breed || req.body.age === undefined) {
+        return res.status(400).json({ message: "Name, species, breed and age are required." });
+    }
     const newPet: PetData = {
         id: pets.length + 1,    // unikt id för djuret i DB
-        userID: req.body.userID,   //unik id för användare 
-        name: req.body.name || "Unknown",
-        species: req.body.species || "Unknown",
-        breed: req.body.breed || "Unknown",
-        age: req.body.age || 0,
-    }
+        userID: req.body.userID,   // unik id för användare
+        name: req.body.name,
+        species: req.body.species,
+        breed: req.body.breed,
+        age: req.body.age,
+    };
     pets.push(newPet);
     res.status(201).json(newPet);
-}
+};
+
 
 // Detta uppdaterar DATA i DB (i detta fall djuren)
 export const updatePet = (req: Request, res: Response) => {

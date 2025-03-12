@@ -11,4 +11,3 @@ export interface PetData{
     color?: string;
     weight?: number;
 }
-

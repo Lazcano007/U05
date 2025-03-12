@@ -2,6 +2,8 @@ import express, {Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import connectDB from "../database/db";
 import { getPets } from "../Controller/petController";
+import { getUser } from "../Controller/userController";
+import router from "../Routes/userRouter";
 
 dotenv.config();
 connectDB();
@@ -16,7 +18,12 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Hello world");
 });
 
+
+app.use("/api/users", router);
 app.use("/Pets", getPets);
+app.use("/Users", getUser);
+
+
 
 app.listen(PORT,()=> {
     console.log(`Program is running on http://localhost:${PORT}`);

@@ -12,7 +12,7 @@ export interface PetData extends Document {      //Detta interface är DIREKT ko
     weight?: number;
 }
 
-const PetSchema = new Schema({      //Definerar strukturen för dokumnetet i DB
+const PetSchema = new Schema({                //Definerar strukturen för dokumnetet i DB
 
     id: {type: Number, required: true},       //Definerar vad som kävs för att skapa ett husdjursdokument, "required" är obligatiriskt
     userID: {type: Number, required: true},
@@ -24,6 +24,6 @@ const PetSchema = new Schema({      //Definerar strukturen för dokumnetet i DB
     weight: { type: Number },  
 });
 
-const Pets = mongoose.model<PetData>("Pet", PetSchema);    //skapar en doell som kopplar till MongoDB-collection. "Pet" är namnet på collectionen
+const Pets = mongoose.model<PetData>("Pet", PetSchema);    //Skapar en doell som kopplar till MongoDB-collection. "Pet" är namnet på collectionen
 
 export default Pets;

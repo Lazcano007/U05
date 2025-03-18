@@ -1,9 +1,10 @@
-import { Document } from "mongoose";  // {Document} används för att definera strukturen för dokumnetet i DB
+import mongoose, { Document } from "mongoose";  // {Document} används för att definera strukturen för dokumnetet i DB
 
 // definerar strukturen för dokumentet i databasen
 export interface AppointmentData{
-    id: number;
+    petId: mongoose.Types.ObjectId;   // Referens till husdjurets _id
+    userId: mongoose.Types.ObjectId;  // Referens till användarens _id (den som bokade)
     date: Date;
-    time: number,
-    description: string;
+    time: Number,
+    description: String;
 }

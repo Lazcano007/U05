@@ -1,76 +1,83 @@
 import {Request, Response} from "express";
-import { PetData } from "../Interface/pets";
-import Pets from "../Model/petModel";
-
-//DUMMY DATA
-//Denna data används för att testa CRUD operationer innan vi kopplar till databasen
-let pets: PetData[] = [
-    {id: 1, userID: 1, name:"Balboa", species: "Dog", breed: "miniature-pinscher", age: 11},
-    {id: 2, userID: 2, name:"Bandida", species: "Dog", breed: "staffordshire bullterrier", age: 2}
-];
-
-
-
+import Pet from "../Model/petModel";
+import petModel from "../Model/petModel";
 
 //CRUD OPERATIONER FÖR DJUR 
 
 // Detta hämtar all DATA från DB (i detta fall djuren)
-export const getPets = async (req: Request, res: Response) => {
+
+export const getUserPets =  async (req: Request, res: Response) => {
     try {
-        res.json(pets);
-    } catch(error: any) {
-        res.status(400).json({error: error.message});
+        const { id } = req.params; // parametern heter :id
+        const pets = await petModel.find({ owner: id });
+        if (!pets || pets.length === 0) {
+          res.status(404).json({ message: "No pets found for this user" });
+          return;
+        }
+    res.status(200).json(pets);
+    } catch (error: any) {
+    res.status(500).json({message: "There's been an error getting your pets", error: error.message});
     }
-    
-}
+};
 
 // Detta hämtar en specifikt DATA från DB (i detta fall djuren baserat på ID)
-export const getPetById = (req: Request, res: Response) => {
-    const pet = pets.find((nextpets) => nextpets.id === parseInt(req.params.id));
-    if(!pet) {
+export const getPetById = async (req: Request, res: Response) => {
+    try{
+        const pet = await petModel.findById(req.params.id);
+    if(!pet) { 
         res.status(404).json({ message: "This pet is not found"});
         return;
-    }
+        }
     res.json(pet);
+    } catch (error:any) {
+        res.status(500).json({message: error.message});
+    } 
 }
 
 // Detta lägger till DATA i DB (i detta fall djuren)
-export const addPet = (req: Request, res: Response) => {
-    // Kontrollera att alla obligatoriska fält finns
-    if (!req.body.name || !req.body.species || !req.body.breed || req.body.age === undefined) {
-        return res.status(400).json({ message: "Name, species, breed and age are required." });
+export const createPet = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { name, species, breed, age, owner } = req.body;
+        if (!name || !species || !breed || age === undefined || !owner) {
+        res.status(400).json({ message: "Name, species, breed, age and owner are required." });
+        return;
     }
-    const newPet: PetData = {
-        id: pets.length + 1,    // unikt id för djuret i DB
-        userID: req.body.userID,   // unik id för användare
-        name: req.body.name,
-        species: req.body.species,
-        breed: req.body.breed,
-        age: req.body.age,
-    };
-    pets.push(newPet);
+      const newPet = new Pet({name: req.body.name, species: req.body.species, breed: req.body.breed, age: req.body.age, owner: req.body.owner});
+      await newPet.save();
     res.status(201).json(newPet);
-};
-
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  };
 
 // Detta uppdaterar DATA i DB (i detta fall djuren)
-export const updatePet = (req: Request, res: Response) => {
-    const petIndex = pets.findIndex (p => p.id === parseInt(req.params.id));    //(req.param.id) =hämtar index för djuret som ska uppdateras
-    if(petIndex === -1) {                                                       //parseInt(req.params.id) omvandlar id frånstring till int                                           
-    res.status(404).json({message: "This pet is not found"});    
-    return;
+export const updatePet = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const updatedPet = await petModel.findByIdAndUpdate( id, req.body, {new: true});  
+        if (!updatedPet) {                                                                                           
+        res.status(404).json({message: "This pet is not found"});    
+        return;
     }
-    pets[petIndex] = { ...pets[petIndex], ...req.body};            // (...) = uppdaterar djuret utan att skriva över hela objektet
-    res.json({message: "Your pet has been successfully updated", pet: pets[petIndex]});   //(pet: pets[petIndex) = visar vilket djur som uppdaterats
+    res.json({message: "Your pet has been successfully updated", pet: updatedPet});
+    } catch (error:any) {
+        res.status(500).json({message: error.message || "There's been a server error"})
+    }
 }
 
+
+
 // Detta tar bort DATA i DB (i detta fall djuren)
-export const deletePet = (req: Request, res: Response) => {
-    const petIndex = pets.findIndex(p=> p.id === parseInt(req.params.id));
-    if (petIndex === -1) {
+export const deletePet = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const deletedPet = await petModel.findByIdAndDelete(id);
+        if (!deletedPet) {
         res.status(404).json({message: "This pet is not found"});
         return;
     }
-    pets.splice(petIndex, 1);  //splice tar bort ett element från arrayen
-    res.json({message: "Your pet has been successfully deleted"})
-}
+    res.json({ message: "Your pet has been successfully deleted" });
+    } catch (error: any) {
+        res.status(500).json({ message: error.message || "There's been a server error" });
+    }
+};

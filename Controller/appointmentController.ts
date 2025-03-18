@@ -1,71 +1,84 @@
 import {Request, Response} from "express";
-import { AppointmentData } from "../Interface/appointments";
-import Appointments from "../Model/appointmentModel";
+import appointmentModel from "../Model/appointmentModel";
+import Appointment from "../Model/appointmentModel";
 
-//DUMMY DATA
-let appointments: AppointmentData[] = [
-    { id: 1, date: new Date(), time: 900, description: "Vaccination" },
-    { id: 2, date: new Date(), time: 1100, description: "Check-up" }      //date: new Date() = hämtar dagens datum just exakt i det momentet koden körs 
-  ];
+
+
 
 //CRUD OPERATIONER FÖR BESÖKTIDER 
 
 // Detta hämtar all DATA från DB (i detta fall bokningar)
-export const getAppointments = async (req: Request, res: Response) => {
+export const getAppointments =  async (req: Request, res: Response) => {
     try {
-        const appointments = await Appointments.find();       // Hämtar dokument från DB
-        res.json(appointments);                               // Skicka tillbaka dokumenten
+        const appointments = await appointmentModel.find();
+    res.status(200).json(appointments);
     } catch (error: any) {
-        res.status(400).json({ error: error.message });
+        res.status(500).json({message: "Theres been an error fetching your appointment", erorr: error.message});
     }
 };
 
+
+
 // Detta hämtar en specifikt DATA från DB (i detta fall bokningar baserat på ID)
-export const getAppointmentById = (req: Request, res: Response) => {
-    const appointment = appointments.find(a => a.id === parseInt(req.params.id));
-    if(!appointment) {
+export const getAppointmentById = async (req: Request, res: Response) => {
+    try{
+        const appointment = await appointmentModel.findById(req.params.id);
+    if(!appointment) { 
         res.status(404).json({ message: "This appointment is not found"});
         return;
-    }
+        }
     res.json(appointment);
+    } catch (error:any) {
+        res.status(500).json({message: error.message});
+    } 
 }
+
 
 
 // Detta lägger till DATA i DB (i detta fall bokningar)
-export const addAppointment = (req: Request, res: Response) => { 
-     // Kontrollera att alla obligatoriska fält finns
-    if (!req.body.date || !req.body.time || req.body.description === undefined) {
-        return res.status(400).json({ message: "Id, date, time and description are required." });
-    }
-    const newAppointment: AppointmentData = {
-        id: appointments.length + 1,    // unikt id för bokningar i DB
-        date: req.body.date,
-        time: req.body.time,
-        description: req.body.description,
-    };
-    appointments.push(newAppointment);
+export const createAppointment = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { petId, userId, date, time, description } = req.body;
+        if (!petId|| !userId || !date || !time || description === undefined) {
+        res.status(400).json({ message: "The PetId, UserId, date, time and description are required." });
+        return;
+        }
+        const newAppointment = new Appointment({ petId, userId, date, time, description });
+        await newAppointment.save();
     res.status(201).json(newAppointment);
-};
-
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  }; 
 
 // Detta uppdaterar DATA i DB (i detta fall bokningar)
-export const updateAppointment = (req: Request, res: Response) => {
-    const appointmentIndex = appointments.findIndex (a => a.id === parseInt(req.params.id));    //(req.param.id) =hämtar index för bokningar som ska uppdateras
-    if(appointmentIndex === -1) {                                                       //parseInt(req.params.id) omvandlar id frånstring till int                                           
-    res.status(404).json({message: "This appointment is not found"});    
-    return;
+
+export const updateAppointment = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const updateAppointment = await appointmentModel.findByIdAndUpdate( id, req.body, {new: true});  
+        if (!updateAppointment) {                                                                                           
+        res.status(404).json({message: "This appointment is not found"});    
+        return;
     }
-    appointments[appointmentIndex] = { ...appointments[appointmentIndex], ...req.body};            // (...) = uppdaterar appointment utan att skriva över hela objektet
-    res.json({message: "Your appointment has been successfully updated", appointment: appointments[appointmentIndex]});   //(bokningar: bokningars[bokningarIndex) = visar vilken appointment som uppdaterats
+    res.json({message: "Your appointment has been successfully updated", appointment: updateAppointment});
+    } catch (error:any) {
+        res.status(500).json({message: error.message || "Theres been a server error"})
+    }
 }
 
+
 // Detta tar bort DATA i DB (i detta fall bokningar)
-export const deleteAppointment = (req: Request, res: Response) => {
-    const appointmentIndex = appointments.findIndex(a=> a.id === parseInt(req.params.id));
-    if (appointmentIndex === -1) {
+export const deleteAppointment = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const deletedAppointment = await appointmentModel.findByIdAndDelete(id);
+        if (!deletedAppointment) {
         res.status(404).json({message: "This appointment is not found"});
         return;
     }
-    appointments.splice(appointmentIndex, 1);  //splice tar bort ett element från arrayen
-    res.json({message: "Your appointment has been successfully deleted"})
-}
+    res.json({ message: "Your appointment has been successfully deleted" });
+    } catch (error: any) {
+        res.status(500).json({ message: error.message || "There's been a server error" });
+    }
+};

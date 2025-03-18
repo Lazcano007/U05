@@ -1,13 +1,9 @@
 import express from "express";
-import {getPets} from "../Controller/petController";
-import { createUser, getUser } from "../Controller/userController";
+import { createUser, getUsers, loginUser, logoutUser} from "../Controller/userController"; // Kontrollera denna sökväg!
+const userRouter = express.Router();
 
-const router = express.Router();
-
-router.get("/", getPets);
-
-router.get("/", getUser);
-
-router.post("/registration", createUser);
-
-export default router;
+userRouter.post("/registration", createUser);
+userRouter.post("/login", loginUser);
+userRouter.get("/", getUsers);
+userRouter.post("/logout", logoutUser);
+export default userRouter;

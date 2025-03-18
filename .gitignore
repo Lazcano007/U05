@@ -13,5 +13,11 @@ coverage
 # Benchmarking
 benchmarks/graphs
 
+# Build files
+build-js/
+
+# .env file
+.env
+
 # ignore additional files using core.excludesFile
 # https://git-scm.com/docs/gitignore

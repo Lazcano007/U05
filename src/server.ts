@@ -30,11 +30,11 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Wag1 G...Welcome to my pets-API :)");
 });
 
-app.use("/api/Users", userRouter);
-app.use("/api/Pets", petRouter);
-app.use("/api/Vaccins", vaccinRouter);
-app.use("/api/Journals", journalRouter);
-app.use("/api/Appointments", appoinmentRouter);
+app.use("/api/v1/Users", userRouter);
+app.use("/api/v1/Pets", petRouter);
+app.use("/api/v1/Vaccins", vaccinRouter);
+app.use("/api/v1/Journals", journalRouter);
+app.use("/api/v1/Appointments", appoinmentRouter);
 
 
 

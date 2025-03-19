@@ -6,8 +6,8 @@ const journalRouter = express.Router();
 
 // journalRouter.get("/", getJournals)
 
-journalRouter.get("/pet/:petId", getJournalsForPet);
 journalRouter.post("/create", createJournal)
+journalRouter.get("/pet/:petId", getJournalsForPet);
 journalRouter.put("/update/:id", updateJournal)
 journalRouter.delete("/delete/:id", deleteJournal)
 

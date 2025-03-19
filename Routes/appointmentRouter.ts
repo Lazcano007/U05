@@ -3,8 +3,8 @@ import { getAppointments, getAppointmentById, createAppointment, updateAppointme
 
 const appoinmentRouter = express.Router();
 
-appoinmentRouter.get("/pet/:petId", getAppointments)
 appoinmentRouter.post("/create", createAppointment)
+appoinmentRouter.get("/pet/:petId", getAppointments)
 appoinmentRouter.put("/update/:id", updateAppointment)
 appoinmentRouter.delete("/delete/:id", deleteAppointment)
 

@@ -22,6 +22,7 @@ Här definieras API:ets endpoints som används för att hantera olika resurser. 
 //Auth
 /user/register
 /user/login
+/user/logout
 
 //Pets
 /users/{userId}/pets
@@ -57,29 +58,35 @@ I denna del presenteras API:ets resurser i JSON-format för att demostrera hur d
 ```json
 //Användare
 {
-  "userID": 1234,
-  "name": "Pedro",
-  "email": "Pedro@me.com",
-  "password": "twet45t45thuwhfge5u5wu45tb"//***Hashed***
+    "name": "Pedro",
+    "email": "Pedro@test.com",
+    "password": "$2b$10$jjCX8rq8/DKMsI/91IozbeYwNpfOgBaNydqrOVzqB1OFkSi7py2i.",
+    "_id": "67dadd502e084ecd23ee7167",
+    "__v": 0
 },
 
 //Registrera Husdjur
 {
-  "userID": 1234,
   "pets": [
     {
-      "petID": 1,
-      "name": "Balboa",
-      "species": "Dog",
-      "breed": "Dvärg-pincher",
-      "age": 10
+      "owner": "67dadd502345344ecd23ee7167",
+      "vaccinations": [],
+      "name": "lilo",
+      "species": "angora",
+      "breed": "cat",
+      "age": 1,
+      "_id": "67dadd832e0834534d23ee716a",
+      "__v": 0
     },
     {
-      "petID": 2,
-      "name": "Bandida",
-      "species": "Dog",
-      "breed": "Staffordshire-bullterrier",
-      "age": 10
+      "owner": "67dadd502e0r34534wer23ee7167",
+      "vaccinations": [],
+      "name": "Peter",
+      "species": "angora",
+      "breed": "kängru",
+      "age": 1,
+      "_id": "67dadd832e0633453423ee716a",
+      "__v": 0
     }
   ]
 }
@@ -88,17 +95,21 @@ I denna del presenteras API:ets resurser i JSON-format för att demostrera hur d
 {
 "petID": 1,
 "vaccinations": [
-    {
-      "vaccinationID": 1,
-      "name": "Rabies",
-      "dateTaken": "2025-03-14",
-      "description": "rabies contamination"
+   {
+      "pet": "67dadd832e084ecd23ee716a",
+      "name": "antibiotic shot",
+      "date": "2025-03-16T00:00:00.000Z",
+      "description": "infeccted nose ring",
+      "_id": "67daded82e084ecd23ee7173",
+      "__v": 0
     },
     {
-      "vaccinationID": 2,
-      "name": "worm",
-      "dateTaken": "2025-03-19",
-      "description": "worms contamination"
+      "pet": "67dadd832e084ecd23ee716a",
+      "name": "antibiotic shot",
+      "date": "2025-03-16T00:00:00.000Z",
+      "description": "infeccted nose ring",
+      "_id": "67daded82e084ecd23ee7173",
+      "__v": 0
     }
   ]
 }
@@ -108,16 +119,22 @@ I denna del presenteras API:ets resurser i JSON-format för att demostrera hur d
   "petID": 1,
   "appointments": [
     {
-      "appointmentID": 1,
-      "date": "2025-03-17",
-      "time": "14:15",
-      "description": "rabies contamination checkup"
+      "petId": "67dadd832e084ecd23ee716a",
+      "userId": "67dadd502e084ecd23ee7167",
+      "date": "2025-03-19T00:00:00.000Z",
+      "time": 1300,
+      "description": "nose drop drop for nose-infecction",
+      "_id": "67dae0be2e084ecd23ee7184",
+      "__v": 0
     },
     {
-      "appointmentID": 2,
-      "date": "2025-05-17",
-      "time": "17:45",
-      "description": "worms contamination checkup"
+      "petId": "67dadd832e084ecd23ee716a",
+      "userId": "67dadd502e084ecd23ee7167",
+      "date": "2025-03-19T00:00:00.000Z",
+      "time": 1300,
+      "description": "nose drop drop for nose-infecction",
+      "_id": "67dae0be2e084ecd23ee7184",
+      "__v": 0
     }
   ] 
 }
@@ -127,16 +144,22 @@ I denna del presenteras API:ets resurser i JSON-format för att demostrera hur d
   "petID": 1,
   "journal": [
     {
-      "description": "rabies contamination",
-      "treatment": "rabies vaccin",
-      "dateDiagnosis": "2025-05-17",
-      "status": "Healed"
+      "petId": "67dadd832e084ecd23ee716a",
+      "description": "nose infecction needs curing",
+      "treatment": "nose-drops",
+      "dateDiagnosis": "2025-01-18T00:00:00.000Z",
+      "status": "ongoing",
+      "_id": "67dae0072e084ecd23ee717b",
+      "__v": 0
     },
     {
-      "description": "worms contamination",
-      "treatment": "worm drops",
-      "dateDiagnosis": "2025-03-17",
-      "status": "Healed"
+      "petId": "67dadd832e084ecd23ee716a",
+      "description": "nose infecction needs curing",
+      "treatment": "nose-drops",
+      "dateDiagnosis": "2025-01-18T00:00:00.000Z",
+      "status": "ongoing",
+      "_id": "67dae0072e084ecd23ee717b",
+      "__v": 0
     }
   ]
 }
@@ -155,13 +178,21 @@ Denna del av API:et hanterar användarregistrering och inloggning. Vid registrer
 ```json
 {
     "auth": {
-      "register": {
+      "createUser": {
         "method": "POST",
-        "path": "/api/v1/users/register"
+        "path": "/api/v1/Users/registration"
       },
-      "login": {
+      "loginUser": {
         "method": "POST",
-        "path": "/api/v1/users/login"
+        "path": "/api/v1/Users/login"
+      },
+      "getUsers": {
+        "method": "GET",
+        "path": "/api/v1/Users/"
+      },
+      "logoutUser": {
+        "method": "POST",
+        "path": "/api/v1/Users/logout"
       }
     }
 }
@@ -173,25 +204,25 @@ Denna del av API:et möjliggör för en användare att registrera nya husdjur ge
 ```json
 {
   "pets": {
-    "getAllPetsForUser": {
-      "method": "GET",
-      "path": "/api/v1/users/{Id}/pets"
-    },
-    "addPet": {
+    "createPet": {
       "method": "POST",
-      "path": "/api/v1/{userId}/pets"
+      "path": "/api/v1/Pets/create"
+    },
+    "getUserPets": {
+      "method": "GET",
+      "path": "/api/v1/Pets/users/{petId}"
     },
     "getPetById": {
       "method": "GET",
-      "path": "/api/v1/{userId}/pets/pet:Id"
+      "path": "/api/v1/Pets/update/{petId}"
     },
-     "UpdatePetById": {
+     "updatePet": {
       "method": "PUT",
-      "path": "/api/v1/{userId}/pets/pet:Id/update"
+      "path": "/api/v1/Pets/update/{petId}"
     },
-      "DeletePetById": {
+      "deletePet": {
       "method": "DELETE",
-      "path": "/api/v1/{userId}/pets/pet:Id/delete"
+      "path": "/api/v1/Pets/delete/{petId}"
     }
   }
 }
@@ -202,21 +233,25 @@ Denna del av API:et möjligtgör för en användare att registrera nya vaccinati
 ```json
 {
   "vaccinations": {
-      "addVaccination": {
+      "createVaccin": {
         "method": "POST",
-        "path": "/api/v1/{userId}/pets/{petId}/vaccinations"
+        "path": "/api/v1/Vaccins/create/"
       },
-      "getVaccinationHistory": {
+      "getVaccinsForPet": {
         "method": "GET",
-        "path": "/api/v1/{userId}/pets/{petId}/vaccinations"
+        "path": "/api/v1/Vaccins/pet/{petId}"
       },
-      "UpdateVaccination:Id": {
+      "getVaccinById": {
+        "method": "GET",
+        "path": "/api/v1/Vaccins/{vaccinId}"
+      },
+      "updateVaccinForPet": {
         "method": "PUT",
-        "path": "/api/v1/{userId}/pets/{petId}/{vaccinationId}/update"
+        "path": "/api/v1/Vaccins/pets/{petId}/vaccins/{vaccinId}"
       },
-      "DeleteVaccination:Id": {
+      "deleteVaccinFromJournal": {
         "method": "DELETE",
-        "path": "/api/v1/{userId}/pets/{petId}/{vaccinationId}/delete"
+        "path": "/api/v1/Vaccins/pets/{petId}/vaccins/{vaccinId}"
       }
     }
 }
@@ -229,21 +264,21 @@ Denna del av API:et gör det möjligt för användare att registrera kommande ve
 
 {   
   "appointments": {
-      "addAppointment": {
+      "createAppointment": {
         "method": "POST",
-        "path": "/api/v1/{userId}/pets/{petId}/appointments"
+        "path": "/api/v1/Appointments/create"
       },
       "getAppointments": {
         "method": "GET",
-        "path": "/api/v1/{userId}/pets/{petId}/appointments"
+        "path": "/api/v1/Appointments/pet/{petId}"
       },
-      "getAppointments:Id": {
+      "updateAppointment": {
         "method": "GET",
-        "path": "/api/v1/{userId}/pets/{petId}/{appointmentId}/update"
+        "path": "/api/v1/Appointments/update/{appointmentId}"
       },
-      "getAppointments:Id": {
+      "deleteAppointment": {
         "method": "DELETE",
-        "path": "/api/v1/{userId}/pets/{petId}/{appointmentId}/delete"
+        "path": "/api/v1/Appointments/delete/{appointmentId}"
       }
     }
 }
@@ -255,21 +290,22 @@ Denna del av API:et möjliggör för en användare att registrera nya behandling
 
 ```json
 {
-    "medicalHistory": {
-      "addMedicalRecord": {
+    "Journal": {
+      "createJournal": {
         "method": "POST",
-        "path": "/api/v1/{userId}/pets/{petId}/journal"
+        "path": "/api/v1/Journals/create"
       },
-      "getMedicalHistory": {
+      "getJournalsForPet": {
         "method": "GET",
-        "path": "/api/v1/{userId}/pets/{petId}/journal"
+        "path": "/api/v1/Journals/pet/{petId}"
       },
-       "getMedicalHistory:Id": {
+      "updateJournal": {
         "method": "PUT",
-        "path": "/api/v1/{userId}/pets/{petId}/{journalId}/update"
-      }, "getMedicalHistory:Id": {
-        "method": "GET",
-        "path": "/api/v1/{userId}/pets/{petId}/{journalId}/delete"
+        "path": "/api/v1/Journals/update/{journalId}"
+      }, 
+      "deleteJournal": {
+        "method": "DELETE",
+        "path": "/api/v1/Journals/delete/{journalId}"
       }
     }
 }

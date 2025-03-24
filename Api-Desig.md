@@ -14,6 +14,7 @@ Detta API är skapat för att hantera användare och deras husdjur.
 - **Medicinska journal:** Registrera och hämta medicinsk historik.
 
 ---
+
 ## **2. Model URls**
 
 Här definieras API:ets endpoints som används för att hantera olika resurser. Varje endpoint representerar en specifik crud-operation, såsom att registrera en användare, hantera husdjur, registrera vaccinationer, boka veterinärbesök eller uppdatera medicinska journaler.
@@ -51,6 +52,7 @@ Här definieras API:ets endpoints som används för att hantera olika resurser. 
 ```
 
 ---
+
 ## **3 Resource representation**
 
 I denna del presenteras API:ets resurser i JSON-format för att demostrera hur data lagras och hanteras. Varje resurs representerar en specifik del av systemet, som användare, husdjur, vaccinationer, veterinärbesök och medicinska journaler. Det hjälper till att förstå strukturen på datan som skickas och tas emot vid anrop till API:et.
@@ -165,7 +167,9 @@ I denna del presenteras API:ets resurser i JSON-format för att demostrera hur d
 }
 
 ```
+
 ---
+
 ## **4 Assigning HTTP methods**
 
 ### ***API Endpoints***
@@ -175,6 +179,7 @@ Detta är en översikt över API-endpoints med JSON-representation:
 #### **Användarhantering (Auth)**
 
 Denna del av API:et hanterar användarregistrering och inloggning. Vid registrering kan en ny användare skapa ett konto genom att ange sitt namn, e-postadress och ett säkert lösenord. Efter att kontot har skapats kan användaren logga in genom att ange sin registrerade e-postadress och lösenord. Detta möjliggör autentisering och säker åtkomst till API:ets funktioner.
+
 ```json
 {
     "auth": {
@@ -200,7 +205,8 @@ Denna del av API:et hanterar användarregistrering och inloggning. Vid registrer
 
 #### **Husdjur**
 
-Denna del av API:et möjliggör för en användare att registrera nya husdjur genom att fylla i namn, ålder och ras. Dessutom kan användaren hämta en lista över samtliga registrerade husdjur kopplade till sitt konto, vilket underlättar hanteringen av husdjuren. 
+Denna del av API:et möjliggör för en användare att registrera nya husdjur genom att fylla i namn, ålder och ras. Dessutom kan användaren hämta en lista över samtliga registrerade husdjur kopplade till sitt konto, vilket underlättar hanteringen av husdjuren.
+
 ```json
 {
   "pets": {
@@ -227,9 +233,11 @@ Denna del av API:et möjliggör för en användare att registrera nya husdjur ge
   }
 }
 ```
+
 #### **Vaccination**
 
 Denna del av API:et möjligtgör för en användare att registrera nya vaccinationer för sina husdjur genom att skriva information som vaccinnamn och datum. Dessutom kan användaren hämta vaccinationshistorik för ett specifikt husdjur, vilket ger en tydlig översikt över tidigare och kommande vaccinationer.
+
 ```json
 {
   "vaccinations": {
@@ -260,6 +268,7 @@ Denna del av API:et möjligtgör för en användare att registrera nya vaccinati
 #### **Besök**
 
 Denna del av API:et gör det möjligt för användare att registrera kommande veterinärbesök för sina husdjur genom att skriva information som datum, tid och en kort beskrivning av besöket. Dessutom kan användaren hämta information om planerade veterinärbesök, inkl nästa inbokade besök är.
+
 ```json
 
 {   

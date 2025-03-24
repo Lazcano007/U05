@@ -1,8 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import {PetData} from "../Interface/pets";
 
-// export interface PetData extends Document {      //Detta interface är DIREKT kopplat till DATABASEN MongoDB
-//     owner: mongoose.Types.ObjectId;            // Refererar till användarens _id (som man får automatisk av mongodb)
+// export interface PetData extends Document {  
+//     owner: mongoose.Types.ObjectId;           
 //     name : string;
 //     species : string;
 //     breed: string;

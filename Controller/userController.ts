@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import { hashPassword, verifyPassword } from "../src/bcrypt";
 import { userModel } from "../Model/userModel";
-
+import  jwt  from "jsonwebtoken";
 
 // Detta hämtar DATA från DB (i detta fall användare)
 export const getUsers =  async (req: Request, res: Response) => {
@@ -50,25 +50,30 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 // Detta loggar in användaren
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        if (!req.body.name || !req.body.password) {       //Kollar om name, name och password finns
-            res.status(400).json({message: "Both name and password is required"});
-            return;
-        }
-    const user = await userModel.findOne({name: req.body.name});
-    if(!user) {
-        res.status(404).json({ message: "This user is not found"});
+      const { name, password } = req.body;
+  
+      if (!name || !password) {
+        res.status(400).json({ message: "Both name and password are required" });
         return;
+      }
+      const user = await userModel.findOne({ name });
+      if (!user) {
+        res.status(404).json({ message: "This user is not found" });
+        return;
+      }
+      const match = await verifyPassword(password, user.password);
+      if (!match) {
+        res.status(401).json({ message: "This password is incorrect" });
+        return;
+      }
+      const token = jwt.sign({ id: user._id },process.env.ACCESS_TOKEN_SECRET!, { expiresIn: "1h" });
+      res.status(200).json({ message: "You are logged in", token, user: { name: user.name, email: user.email}});
+      return;
+    } catch (error: any) {
+      res.status(500).json({message: error.message || "There's been a server error"});
     }
-    const match = await verifyPassword(req.body.password, user.password);
-    if(match) {
-        res.json({message: "You are logged in", user: {name: user.name, email: user.email}});
-    } else {
-        res.status(401).json({message: "This password is incorrect"});
-    }
-    } catch (error:any) {
-        res.status(500).json({message: error.message || "Theres been a server error"})
-    }
-};
+  };
+  
 
 // Detta uppdaterar DATA i DB (i detta fall användaren)
 export const updateUser = async (req: Request, res: Response): Promise<void> => {

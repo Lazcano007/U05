@@ -66,8 +66,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         res.status(401).json({ message: "This password is incorrect" });
         return;
       }
-      const token = jwt.sign({ id: user._id },process.env.ACCESS_TOKEN_SECRET!, { expiresIn: "1h" });
-      res.status(200).json({ message: "You are logged in", token, user: { name: user.name, email: user.email}});
+      const token = jwt.sign({ id: user._id },process.env.ACCESS_TOKEN_SECRET!);
+      res.status(200).json({ message: "You are now logged in", token, user: { name: user.name, email: user.email}});
       return;
     } catch (error: any) {
       res.status(500).json({message: error.message || "There's been a server error"});

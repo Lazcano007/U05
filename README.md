@@ -39,7 +39,7 @@ ACCESS_TOKEN_SECRET=valfri_hemlig_nyckel
 
 ## Steg 1 – Klona projektet
 
-#### Klona denna projekt:
+#### Klona denna projekt
 
 - [GitHub-U05](https://github.com/Lazcano007/U05.git)
 
@@ -47,7 +47,7 @@ ACCESS_TOKEN_SECRET=valfri_hemlig_nyckel
 
 ## Steg 2 Installera beroenden
 
-#### Kör detta kommando i din terminal:
+#### Kör detta kommando i din terminal
 
 ```
  npm install
@@ -55,7 +55,7 @@ ACCESS_TOKEN_SECRET=valfri_hemlig_nyckel
 
 ## Steg 3 – Skapa .env-fil
 
-#### Skapa en .env fil där du har detta nedan:
+#### Skapa en .env fil där du har detta nedan
 
 ```
 PORT=3100
@@ -65,7 +65,7 @@ ACCESS_TOKEN_SECRET=s3cr3tjwtkeysuperhemligt2025
 
 ## Steg 4 - Starta servern
 
-#### Kör detta kommando i din terminal:
+#### Kör detta kommando i din terminal
 
 ```
 npm run dev
@@ -73,7 +73,7 @@ npm run dev
 
 ## Steg 5 - Testa med insomnia
 
-#### Nu kan du testa göra ett anrop via **Insomnia** för att testa:
+#### Nu kan du testa göra ett anrop via **Insomnia** för att testa
 
 ```
 POST: api/v1/Users/create
@@ -81,13 +81,13 @@ POST: api/v1/Users/create
 
 ## Steg 6 - cURL kommandon
 
-#### Detta är ett cURL kommando för att registrera en användare:
+#### Detta är ett cURL kommando för att registrera en användare
 
 ```
 curl -X POST http://localhost:3100/api/v1/Users/registration   -H "Content-Type: application/json"   -d '{"name": "Dylan", "password": "Skolan24", "email": "dylan@me.com"}'
 ```
 
-#### Detta är ett cURL kommando för att logga in en användare:
+#### Detta är ett cURL kommando för att logga in en användare
 
 ```
 curl -X POST http://localhost:3100/api/v1/Users/login \
@@ -95,20 +95,41 @@ curl -X POST http://localhost:3100/api/v1/Users/login \
   -d '{"name": "Dylan", "password": "Skolan24"}'
 ```
 
-#### Detta är ett kommandot är för att hämta alla användare som är registrerade:
+#### Detta är ett kommandot är för att hämta alla användare som är registrerade
 
 ```
 curl -X GET http://localhost:3100/api/v1/Users
 ```
 
-#### Detta är ett kommandot är för att registrera ett djur på en specifik användare:
+#### Detta är ett kommandot är för att registrera ett djur på en specifik användare
 
 ```
-curl -X POST http://localhost:3100/api/v1/Pets/create   -H "Content-Type: application/json"   -d '{"name": "Bella", "species": "Dog", "breed":"pincher", "age": 3, "owner": "67e185f2c284e360b6981e24"}'
+curl -X POST http://localhost:3100/api/v1/Pets/create \ -H "Content-Type: application/json" \ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI5YjNhNzMwZTE1MDdlNDFlYWZjYyIsImlhdCI6MTc0MjkwNDIyM30.C0F12z_gCOT7A5rwKKHBcx0a3DV-7gbntYWXURsawbw" \
+  -d '{ "name": "Bella", "species": "Dog", "breed": "Labrador", "age": 3, "owner": "67e29b3a730e1507e41eafcc"}'
+```
+
+#### Detta är ett kommandot är för att hämta ett djur på en specifik användare
+
+```
+curl -X GET http://localhost:3100/api/v1/Pets/user/67e29b3a730e1507e41eafcc   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI5YjNhNzMwZTE1MDdlNDFlYWZjYyIsImlhdCI6MTc0MjkwNDIyM30.C0F12z_gCOT7A5rwKKHBcx0a3DV-7gbntYWXURsawbw" [{"_id":"67e2a161730e1507e41eafd4" "owner":"67e29b3a730e1507e41eafcc","vaccinations":[],"name":"Bella","species":"Dog","breed":"Labrador","age":3,"__v":0}]
+```
+
+#### Detta är ett kommandot är för att updatera ett djur på en specifik användare
+
+```
+curl -X PUT http://localhost:3100/api/v1/Pets/update/67e29c41730e1507e41eafd0 \ -H "Content-Type: application/json" \ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI5YjNhNzMwZTE1MDdlNDFlYWZjYyIsImlhdCI6MTc0MjkwNDIyM30.C0F12z_gCOT7A5rwKKHBcx0a3DV-7gbntYWXURsawbw" \
+-d '{ "name": "Bella", "species": "Dog", "breed": "Golden Retriever", "age": 4}'
+```
+
+#### Detta är ett kommandot är för att ta bort ett djur på en specifik användare
+
+```
+ curl -X DELETE http://localhost:3100/api/v1/Pets/delete/67e29c41730e1507e41eafd0 \ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI5YjNhNzMwZTE1MDdlNDFlYWZjYyIsImlhdCI6MTc0MjkwNDIyM30.C0F12z_gCOT7A5rwKKHBcx0a3DV-7gbntYWXURsawbw"
+{"message":"Your pet has been successfully deleted"}
 ```
 
 ## Deployad version
 
-#### Det finns även en deployad version av API:et som körs på Render.
+#### Det finns även en deployad version av API:et som körs på Render
 
-- https://u05.onrender.com
+- <https://u05.onrender.com>

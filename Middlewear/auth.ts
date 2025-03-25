@@ -3,7 +3,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { UserData, userModel } from "../Model/userModel"; 
 
 
-interface UserRequest extends Request {
+export interface UserRequest extends Request {
   user?: UserData;
 }
 

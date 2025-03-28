@@ -1,6 +1,11 @@
 import express from "express";
-import { createVaccin, deleteVaccinFromJournal, getVaccinById, getVaccinsForPet, updateVaccinForPet } from "../Controller/vaccinController";
-
+import {
+  createVaccin,
+  deleteVaccinFromJournal,
+  getVaccinById,
+  getVaccinsForPet,
+  updateVaccinForPet,
+} from "../Controller/vaccinController";
 
 const vaccinRouter = express.Router();
 

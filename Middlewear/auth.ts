@@ -1,14 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { UserData, userModel } from "../Model/userModel"; 
-
+import { UserData, userModel } from "../Model/userModel";
 
 export interface UserRequest extends Request {
   user?: UserData;
 }
 
-export const authenticateToken = (req: UserRequest, res: Response, next: NextFunction) => {
-  
+export const authenticateToken = (
+  req: UserRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -23,16 +25,24 @@ export const authenticateToken = (req: UserRequest, res: Response, next: NextFun
       return;
     }
 
-    // Eftersom vi inte kan ha async här, får vi använda .then istället
-    userModel.findById((decoded as JwtPayload).id).then((user) => {
-      if (!user) {
-        res.status(404).json({ message: "This user not found" });
-        return;
-      }
+    userModel
+      .findById((decoded as JwtPayload).id)
+      .then((user) => {
+        if (!user) {
+          res.status(404).json({ message: "This user not found" });
+          return;
+        }
         req.user = user;
         next();
-      }).catch((error) => {console.error(error);
-        res.status(500).json({ message: "There's been and error while fetching user from the database" });
+      })
+      .catch((error) => {
+        console.error(error);
+        res
+          .status(500)
+          .json({
+            message:
+              "There's been and error while fetching user from the database"
+          });
       });
   });
 };

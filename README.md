@@ -90,9 +90,7 @@ curl -X POST http://localhost:3100/api/v1/Users/registration   -H "Content-Type:
 #### Detta är ett cURL kommando för att logga in en användare
 
 ```
-curl -X POST http://localhost:3100/api/v1/Users/login \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Dylan", "password": "Skolan24"}'
+curl -X POST http://localhost:3100/api/v1/Users/login \ -H "Content-Type: application/json" \ -d '{"name": "Dylan", "password": "Skolan24"}'
 ```
 
 #### Detta är ett kommandot är för att hämta alla användare som är registrerade

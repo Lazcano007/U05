@@ -146,6 +146,22 @@ export const logoutUser = async (req: Request, res: Response) => {
   try {
     res.status(200).json({ message: "You successfully logged out" });
   } catch (error: any) {
-    res.status(500).json({ message: "You coudn't logout failed" });
+    res.status(500).json({ message: "There's been a server error" });
+  }
+};
+
+export const filterUser = async (req: Request, res: Response) => {
+  try {
+    const { startingLetter } = req.query;
+    if (!startingLetter || typeof startingLetter !== "string") {
+      res.status(400).json({ message: "Missing starting letter or invalid starting letter" });
+      return;
+    }
+    const regex = new RegExp(`^${startingLetter}`, 'i');
+    const users = await userModel.find({ name: regex });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "There's been a server error" });
+    return;
   }
 };

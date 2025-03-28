@@ -1,6 +1,5 @@
 import mongoose, { Document , Schema } from "mongoose";
 
-
 export interface UserData extends Document {      //Detta interface är DIREKT kopplat till DATABASEN MongoDB
     name : string;
     email: string;

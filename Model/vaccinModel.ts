@@ -1,11 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 import {VaccinData} from "../Interface/vaccins";
-/* export interface VaccinData extends Document {      //Detta interface är DIREKT kopplat till DATABASEN MongoDB
-    // id: number;
-    name: string;
-    date: Date,
-    description: string;
-} */
 
 const VaccinSchema = new Schema({                //Definerar strukturen för dokumnetet i DB
     pet: { type: Schema.Types.ObjectId, ref: "Pet", required: true },

@@ -1,15 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import {PetData} from "../Interface/pets";
 
-// export interface PetData extends Document {  
-//     owner: mongoose.Types.ObjectId;           
-//     name : string;
-//     species : string;
-//     breed: string;
-//     age: number;
-//     color?: string;
-//     weight?: number;
-// }
 
 const PetSchema = new Schema({                 //Definerar strukturen för dokumnetet i DB
     owner: { type: Schema.Types.ObjectId, ref: "User", required: true},     // Refererar till den Mongoose-modell som heter "User"   // Om du vill att varje husdjur måste ha en ägare

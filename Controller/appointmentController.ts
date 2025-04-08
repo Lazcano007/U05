@@ -11,7 +11,7 @@ export const getAppointments = async (req: Request, res: Response) => {
     res.status(200).json(appointments);
   } catch (error: any) {
     res.status(500).json({
-      message: "Theres been an error fetching your appointment"
+      message: "Theres been an error fetching your appointment",
     });
   }
 };
@@ -27,7 +27,7 @@ export const getAppointmentById = async (req: Request, res: Response) => {
     res.json(appointment);
   } catch (error: any) {
     res.status(500).json({
-      message: "Theres been an error fetching your appointment"
+      message: "Theres been an error fetching your appointment",
     });
   }
 };
@@ -41,7 +41,7 @@ export const createAppointment = async (
     const { petId, userId, date, time, description } = req.body;
     if (!petId || !userId || !date || !time || description === undefined) {
       res.status(400).json({
-        message: "The PetId, UserId, date, time and description are required."
+        message: "The PetId, UserId, date, time and description are required.",
       });
       return;
     }

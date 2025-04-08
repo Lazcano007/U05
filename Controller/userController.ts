@@ -76,6 +76,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     const user = await userModel.findOne({ name });
+
     if (!user) {
       res.status(404).json({ message: "This user is not found" });
       return;
@@ -86,18 +87,20 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET!);
-    res
-      .status(200)
-      .json({
-        message: "You are now logged in",
-        token,
-        user: { name: user.name, email: user.email },
-      });
-    return;
+    res.status(200).json({
+      message: "You are now logged in",
+      token,
+      user: {
+        _id: user._id, // 🟢 Här är ändringen som frontend behöver
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (error: any) {
     res.status(500).json({ message: "There's been a server error" });
   }
 };
+
 
 // Detta uppdaterar DATA i DB (i detta fall användaren)
 export const updateUser = async (

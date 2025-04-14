@@ -91,7 +91,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       message: "You are now logged in",
       token,
       user: {
-        _id: user._id, // 🟢 Här är ändringen som frontend behöver
+        _id: user._id, 
         name: user.name,
         email: user.email,
       },

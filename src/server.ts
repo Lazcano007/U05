@@ -16,7 +16,8 @@ const PORT: string | number = process.env.PORT || 3636;
 
 app.use(
   cors({
-    origin: ["http://localhost:3100", "http://localhost:5173, https://pet-care-for-bestfriends.netlify.app"],
+    origin: "*",
+
   })
 );
 
